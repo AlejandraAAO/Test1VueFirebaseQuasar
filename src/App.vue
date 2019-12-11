@@ -20,7 +20,7 @@
                   v-model="newItem.quantity"
                 />
                 <div class="container-btn-submit">
-                  <q-btn label="Guardar" type="submit" color="primary"/>
+                  <q-btn label="Guardar" type="submit" color="blue-6"/>
                 
                 </div>
               </q-form>
@@ -40,7 +40,17 @@
                   :data="items"
                   :columns="columns"
                   row-key="name"
-                />
+                >
+                   <template v-slot:body="props">
+                     <q-tr :props="props">
+                      <q-td key="name" :props="props"> {{ props.row.name }}</q-td>
+                      <q-td key="quantity" :props="props"> {{ props.row.quantity }}</q-td>
+                      <q-td key="extra" :props="props"> {{ props.row.extra }}
+                        <q-btn round color="red-5" icon="delete_outline" size="0.6rem" @click="actionDeleteItem(props.row)"/>
+                      </q-td>
+                     </q-tr>
+                   </template>
+                </q-table>
                 
               </div>
             </q-card-section>
@@ -48,6 +58,19 @@
         </div>
       </div>
     </main>
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="question_answer" color="primary" text-color="white" />
+          <span class="q-ml-sm">Estas seguro que quieres eliminarlo?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Por ahora no" color="primary" v-close-popup />
+          <q-btn flat label="Si" color="primary" @click="deleteItem" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -74,6 +97,8 @@ export default {
   },
   data(){
     return {
+      /* ventanita de confirmación */
+      confirm: false,
       columns:[
          {
           name: 'name', 
@@ -88,12 +113,21 @@ export default {
           label: 'Cantidad',
           align: 'left',
           sortable: true
+        },
+        {
+          name: 'extra', 
+          field: '',
+          label: '',
+          align: 'left',
+         
         }
       ],
       newItem:{
         name:'',
         quantity:0
       },
+      /* item seleccionado sin ningun valor */
+      itemSelected:undefined,
       /* ----PuntoImportante: se debe declarar un valor en 
       data con el mismo nombre de la referencia en firebase; sino saltara el aviso de undefined*/
       items:[]
@@ -111,8 +145,20 @@ export default {
       };
 
     },
-    
-   
+    actionDeleteItem(item){
+      this.confirm = true;
+      /* guardamos los datos de la fila que selecionamos para eliminar */
+      this.itemSelected = item;
+    },
+   deleteItem(){
+     console.log(this.itemSelected);
+      /* buscamos un elemento atraves de la funcion child */
+      dbRef.child(this.itemSelected['.key']).remove();
+      /* ocultamos el confirm */
+      this.confirm = false;
+      /* limpiamos la variable */
+      this.itemSelected = null;
+   }
   },
   mounted(){
     

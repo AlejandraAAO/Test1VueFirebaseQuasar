@@ -17,6 +17,8 @@ Vue.use(Quasar, {
     'QInput',
     'QBtn',
     'QTable',
+    'QDialog',
+    'QAvatar'
   ],
   directives: { /* not needed if importStrategy is not 'manual' */ },
   plugins: {
