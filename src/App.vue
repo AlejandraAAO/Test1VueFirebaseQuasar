@@ -64,7 +64,12 @@
             </q-card-section>
           </q-card>
         </div>
+        <div class="col-6">
+          
+        </div>
       </div>
+      
+
     </main>
     <q-dialog v-model="confirm" persistent>
       <q-card>
