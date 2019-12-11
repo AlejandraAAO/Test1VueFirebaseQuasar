@@ -1,0 +1,26 @@
+#app {
+  height: 100vh;
+}
+
+.navbar {
+  height: 3rem;
+  width: 100%;
+  background-color: lightslategrey;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .title-text-navbar {
+    color: aquamarine;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    letter-spacing: 0.1rem;
+    font-weight: 100;
+   
+  }
+}
+main {
+  height: calc(100vh - 3rem);
+  .section-input-text {
+    padding: 1rem;
+  }
+}

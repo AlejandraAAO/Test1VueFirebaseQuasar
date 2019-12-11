@@ -7,7 +7,14 @@ import { Quasar } from 'quasar'
 
 Vue.use(Quasar, {
   config: {},
-  components: { /* not needed if importStrategy is not 'manual' */ },
+  components: [
+    'QCard',
+    'QCardSection',
+    'QCardActions',
+    'QSeparator',
+    'QForm'
+      
+  ],
   directives: { /* not needed if importStrategy is not 'manual' */ },
   plugins: {
   },
