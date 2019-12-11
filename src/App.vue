@@ -43,8 +43,16 @@
                 >
                    <template v-slot:body="props">
                      <q-tr :props="props">
-                      <q-td key="name" :props="props"> {{ props.row.name }}</q-td>
-                      <q-td key="quantity" :props="props"> {{ props.row.quantity }}</q-td>
+                      <q-td key="name" :props="props"> {{ props.row.name }}
+                        <q-popup-edit buttons v-model="props.row.name" @save="changeValueOfItem(props.row)">
+                          <q-input v-model="props.row.name" dense autofocus/>
+                        </q-popup-edit>
+                      </q-td>
+                      <q-td key="quantity" :props="props"> {{ props.row.quantity }}
+                        <q-popup-edit buttons v-model="props.row.quantity" @save="changeValueOfItem(props.row)">
+                          <q-input v-model="props.row.quantity" dense autofocus/>
+                        </q-popup-edit>
+                      </q-td>
                       <q-td key="extra" :props="props"> {{ props.row.extra }}
                         <q-btn round color="red-5" icon="delete_outline" size="0.6rem" @click="actionDeleteItem(props.row)"/>
                       </q-td>
@@ -158,6 +166,15 @@ export default {
       this.confirm = false;
       /* limpiamos la variable */
       this.itemSelected = null;
+   },
+   changeValueOfItem(item){
+     console.log('changeValueOfItem',item);
+     const key = item['.key'];
+
+     dbRef.child(key).set({
+       ...item
+     })
+     
    }
   },
   mounted(){
